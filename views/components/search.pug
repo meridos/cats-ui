@@ -1,3 +1,5 @@
+include ../utils/helpers
+
 section.section.has-background-light
   .container
     .columns
@@ -13,7 +15,7 @@ section.section.has-background-light
                 placeholder='Введите часть имени кота',
                 autocomplete='off',
                 name='needle',
-                value=name || needle
+                value=needle
               )
             .control
               button.button(type='submit')
@@ -29,7 +31,7 @@ section.section.has-background-light
                       type='checkbox'
                       name='gender'
                       value='male'
-                      checked=genders.includes('male')
+                      checked=checked(genders, 'male')
                     )
                     |  муж.
                   label(style='margin-left: 10px').checkbox
@@ -37,7 +39,7 @@ section.section.has-background-light
                       type='checkbox'
                       name='gender'
                       value='female'
-                      checked=genders.includes('female')
+                      checked=checked(genders, 'female')
                     )
                     |  жен.
                   label(style='margin-left: 10px').checkbox
@@ -45,7 +47,7 @@ section.section.has-background-light
                       type='checkbox'
                       name='gender'
                       value='universal'
-                      checked=genders.includes('universal')
+                      checked=checked(genders, 'universal')
                     )
                     |  универс.
 

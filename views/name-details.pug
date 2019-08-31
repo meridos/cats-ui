@@ -1,3 +1,5 @@
+include utils/constants
+
 doctype html
 html(lang='en')
   head
@@ -25,7 +27,7 @@ html(lang='en')
           .column
             .name-details
               div
-                span.title.is-3 Значение имени #{name}
+                span.title.is-3 Значение имени #{name} #{genderSmileMap[gender]}
               br
               form(method='GET', action='/cats/' + id + '/edit')
                 if description

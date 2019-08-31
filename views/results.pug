@@ -1,3 +1,5 @@
+include utils/constants
+
 doctype html
 html(lang='en')
   head
@@ -33,7 +35,7 @@ html(lang='en')
                   .tags
                     each cat in group.cats
                       span.tag.is-size-5
-                        a(href='/cats/' + cat.id, style={ color: 'black' }) #{cat.name}
+                        a(href='/cats/' + cat.id, style={ color: 'black' }) #{cat.name} #{genderSmileMap[cat.gender]}
                 hr
 
     input#validation-rules(type='hidden', value=validationRules)
