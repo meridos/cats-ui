@@ -38,7 +38,11 @@ html(lang='en')
                     span.icon
                       i.fas.fa-search
                     span Найти имя коту
-    button.button.is-light.has-background-warning(style={ position: 'absolute', right: '20px', bottom: '20px' }).show-add-names
+    button.button.is-light.has-background-warning(style={
+      position: 'absolute',
+      right: '20px',
+      bottom: '20px'
+    }).show-add-names
       span.icon
         i.fas.fa-plus
     .modal.is-clipped
@@ -54,7 +58,7 @@ html(lang='en')
               .field.has-addons
                 .control.is-expanded
                   input.input(
-                    type='text', 
+                    type='text',
                     placeholder='Введите имя',
                     name='catName'
                   )
