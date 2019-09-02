@@ -1,5 +1,3 @@
-include utils/constants
-
 doctype html
 html(lang='en')
   head
@@ -28,7 +26,7 @@ html(lang='en')
             .name-details
               form(method='POST', action='/cats/' + id + '/edit')
                 div
-                  span.title.is-3 Значение имени #{name} #{genderSmileMap[gender]}
+                  span.title.is-3 Значение имени #{name}
                 br
                 textarea.textarea(
                   placeholder='Введите описание кота',

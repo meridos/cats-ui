@@ -71,12 +71,11 @@ function createApp() {
     searchNameDetails(catId)
       .then(json => json.cat)
       .then(cat => {
-        const { name, description, id, gender } = cat
+        const { name, description, id } = cat
         res.render('name-details', {
           name,
           description,
           id,
-          gender,
         })
       })
       .catch(() => showFailPage(res))
@@ -87,12 +86,11 @@ function createApp() {
     searchNameDetails(catId)
       .then(json => json.cat)
       .then(cat => {
-        const { name, description, id, gender } = cat
+        const { name, description, id } = cat
         res.render('name-details-edit', {
           name,
           description,
           id,
-          gender,
         })
       })
       .catch(() => showFailPage(res))
