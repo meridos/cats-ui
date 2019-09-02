@@ -16,25 +16,23 @@ function createApp() {
   app.use(
     bodyParser.urlencoded({
       extended: true,
-    }),
+    })
   )
 
   app.get('/', function(req, res) {
     getRules().then(rules =>
       res.render('index', {
-        validationRules: rules,
-      }),
+        validationRules: rules
+      })
     )
   })
 
   app.post('/search', function(req, res) {
-    const { needle, gender } = req.body
-    const genders = [].concat(gender || [])
-
-    Promise.all([renderSearchName(needle, genders, res), getRules()])
+    const needle = req.body.needle
+    Promise.all([renderSearchName(needle, res), getRules()])
       .then(([renderResult, validationRules]) => {
         const { template, context } = renderResult
-        res.render(template, { ...context, validationRules })
+        res.render(template, {...context, validationRules})
       })
       .catch(() => showFailPage(res))
   })
@@ -58,7 +56,7 @@ function createApp() {
     Promise.all([addCats(catsToAdd, res), getRules()])
       .then(([catSuccessfullyAdded, validationRules]) => {
         if (catSuccessfullyAdded) {
-          res.render('index', { showSuccessPopup: true, validationRules })
+          res.render('index', { showSuccessPopup: true , validationRules})
         } else {
           showFailPage(res)
         }
@@ -137,19 +135,18 @@ function searchNameDetails(catId) {
   return fetch(`${apiUri}/cats/get-by-id?id=${catId}`).then(res => res.json())
 }
 
-function renderSearchName(catName, genders, res) {
+function renderSearchName(catName, res) {
   return fetch(`${apiUri}/cats/search`, {
     method: 'post',
     body: JSON.stringify({
       name: catName,
-      genders,
     }),
     headers: {
       'Content-Type': 'application/json',
     },
   })
     .then(res => res.json())
-    .then(json => createRenderContesxtSearchResult(json, catName, genders))
+    .then(json => createRenderContesxtSearchResult(json, catName))
 }
 
 function addCats(cats) {
@@ -164,14 +161,12 @@ function addCats(cats) {
   }).then(res => res.ok)
 }
 
-function createRenderContesxtSearchResult(json, needle, genders) {
-  console.log(genders)
+function createRenderContesxtSearchResult(json, needle) {
   if (json.groups == null || json.groups.length == 0) {
     return {
       template: 'no-result',
       context: {
         needle,
-        genders,
       },
     }
   } else {
@@ -181,7 +176,6 @@ function createRenderContesxtSearchResult(json, needle, genders) {
         groups: json.groups,
         count: json.count,
         needle,
-        genders,
       },
     }
   }
