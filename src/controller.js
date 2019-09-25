@@ -31,7 +31,7 @@ function createApp() {
   app.use(
     bodyParser.urlencoded({
       extended: true,
-    }),
+    })
   )
   app.use(proxy.init())
   app.use(cookieParser())
@@ -40,7 +40,7 @@ function createApp() {
     getRules().then(rules =>
       res.render('index', {
         validationRules: rules,
-      }),
+      })
     )
   })
 
@@ -50,7 +50,19 @@ function createApp() {
   app.get('/search', function(req, res) {
     const searchParams = {
       needle: req.query.needle,
-      gender: req.query.gender,
+      genders: [],
+    }
+
+    if (req.query.male != null) {
+      searchParams.genders.push('male')
+    }
+
+    if (req.query.female != null) {
+      searchParams.genders.push('female')
+    }
+
+    if (req.query.unisex != null) {
+      searchParams.genders.push('unisex')
     }
 
     Promise.all([searchCatsWithApi(searchParams, res), getRules()])
@@ -65,17 +77,10 @@ function createApp() {
   Метод вывода всех котов
   */
   app.get('/all-names', function(req, res) {
-    const filter = { order: req.query.order, gender: req.query.gender }
-
-    Promise.all([getAllCats(filter), getRules()])
+    Promise.all([getAllCats(req, res), getRules()])
       .then(([renderResult, validationRules]) => {
         const { template, context } = renderResult
-        res.render(template, {
-          ...context,
-          validationRules,
-          order: filter.order || 'none',
-          gender: filter.gender,
-        })
+        res.render(template, { ...context, validationRules })
       })
       .catch(() => showFailPage(res))
   })
@@ -253,8 +258,7 @@ function createApp() {
   })
 
   proxy.post('/cats/:catId/upload', true, function(proxyRes, req, res) {
-    proxyRes.on('data', () => {
-    })
+    proxyRes.on('data', () => {})
 
     proxyRes.on('end', function() {
       res.redirect('back')
