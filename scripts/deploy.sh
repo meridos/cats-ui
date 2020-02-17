@@ -1,5 +1,11 @@
-scp "./tmp/build.tar.gz" "root@bobrovartem.ru:/var/www/cats-ui/tmp/"
-ssh "root@bobrovartem.ru" << EOF
-    rm -fr /var/www/cats-ui/build/
-    tar -zxvf /var/www/cats-ui/tmp/build.tar.gz /var/www/cats-ui/build
+#!/bin/bash
+sudo docker build -t meridos/cats-ui:react .
+sudo docker push "meridos/cats-ui:react"
+sudo ssh -T "root@bobrovartem.ru" << EOF
+    (docker rm -f cats-ui) || true
+    docker run -d \
+    --name cats-ui \
+    --restart always \
+    -p 8080:8080 \
+    "meridos/cats-ui:react"
 EOF

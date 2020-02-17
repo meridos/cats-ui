@@ -23,7 +23,7 @@ export function CatsList({ searchValue }) {
         setError(null);
       })
       .catch(error => {
-        setError(error);
+        setError(error || new Error());
       })
       .finally(() => {
         setLoading(false);
@@ -32,7 +32,7 @@ export function CatsList({ searchValue }) {
 
   return isLoading ? null : error ? (
     <Error />
-  ) : data.count ? (
+  ) : data?.count ? (
     <Results data={data} />
   ) : searchValue ? (
     <NoResults text="Упс! Ничего не нашли" name={searchValue} />
@@ -64,7 +64,7 @@ function NoResults({ text, name }) {
             </div>
             <br />
             <div className="control has-text-centered">
-              <AddCat name={name} />
+              {name ? <AddCat name={name} /> : null}
             </div>
           </div>
         </div>

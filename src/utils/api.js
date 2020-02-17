@@ -8,7 +8,7 @@ export function getApiInstance(baseURL) {
   instance.interceptors.response.use(
     ({ data }) => data,
     error => {
-      const data = error.response.data;
+      const data = error.response && error.response.data;
       let message = null;
 
       message = getBoomError(data);
