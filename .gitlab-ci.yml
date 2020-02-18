@@ -1,8 +1,25 @@
-# This file is a template, and might need editing before it works on your project.
-docker-build-master:
-  # Official docker image.
-  image: docker:latest
+
+stages:
+  - build
+  - publish
+  - deploy
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - build/
+
+build:static:
+  image: node:10.19
   stage: build
+  before_script:
+    - npm install --production
+  script:
+    - npm run build
+
+build:docker-master:
+  image: docker:latest
+  stage: publish
   services:
     - docker:dind
   before_script:
@@ -10,13 +27,14 @@ docker-build-master:
   script:
     - docker build --pull -t "$CI_REGISTRY_IMAGE" .
     - docker push "$CI_REGISTRY_IMAGE"
+  dependencies:
+    - build:static
   only:
     - master
 
-docker-build:
-  # Official docker image.
+build:docker-qa:
   image: docker:latest
-  stage: build
+  stage: publish
   services:
     - docker:dind
   before_script:
@@ -24,5 +42,41 @@ docker-build:
   script:
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
-  except:
+  dependencies:
+    - build:static
+  only:
+    - merge_requests
+
+deploy:docker-master:
+  image: docker:latest
+  stage: deploy
+  services:
+    - docker:dind
+  before_script:
+    - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
+    - eval $(ssh-agent -s)
+    - echo "$DEPLOY_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  script:
+    - ssh $USER@$SERVER "(docker rm -f cats-ui) || true; docker run -d --name cats-ui --restart always -p 8080:8080 \"$CI_REGISTRY_IMAGE\""
+  only:
     - master
+
+deploy:docker-qa:
+  image: docker:latest
+  stage: deploy
+  services:
+    - docker:dind
+  before_script:
+    - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
+    - eval $(ssh-agent -s)
+    - echo "$DEPLOY_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  script:
+    - ssh $USER@$SERVER "(docker rm -f cats-ui-qa) || true; docker run -d --name cats-ui-qa --restart always -p 8081:8080 \"$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG\""
+  only:
+    - merge_requests
