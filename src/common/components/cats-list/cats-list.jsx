@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { CatsApi } from '../../../api/cats';
 import { CatLogo } from '../cat-logo';
 import { GenderIcon } from '../gender-icon';
 import style from './cats-list.module.css';
+import { Filter } from '../filter/filter';
 
 export function CatsList({ searchValue }) {
   const [isLoading, setLoading] = useState(true);
@@ -77,20 +79,30 @@ NoResults.propTypes = {
   name: PropTypes.string.isRequired,
 };
 
-function Results(props) {
+function Results({ data }) {
   return (
-    <section className="section">
-      <div className="container">
-        <div className="columns">
-          <div className="column is-2">
-            <CatLogo class="is-hidden-mobile" />
-          </div>
+    <>
+      <div className={classNames('container', style.filter)}>
+        <div className="columns ">
+          <div className="column is-2"></div>
           <div className="column">
-            <Groups groups={props.data.groups} />
+            <Filter count={data.count} />
           </div>
         </div>
       </div>
-    </section>
+      <section className="section">
+        <div className="container">
+          <div className="columns">
+            <div className="column is-2">
+              <CatLogo class="is-hidden-mobile" />
+            </div>
+            <div className="column">
+              <Groups groups={data.groups} />
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
 Results.propTypes = {
