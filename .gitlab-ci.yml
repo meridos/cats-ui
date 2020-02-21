@@ -3,11 +3,6 @@ stages:
   - publish
   - deploy
 
-cache:
-  key: ${CI_COMMIT_REF_SLUG}
-  paths:
-    - build/
-
 build:static:
   image: node:10.19
   stage: build
@@ -15,6 +10,10 @@ build:static:
     - npm install --production
   script:
     - npm run build
+  artifacts:
+    paths:
+    - build/
+    expire_in: 1 week
   only:
     - master
     - merge_requests
