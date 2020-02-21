@@ -1,7 +1,8 @@
-.name, .gender-label {
-    margin-right: 5px;
+.name,
+.gender-label {
+  margin-right: 5px;
 }
 
 .button-add-remove {
-    margin-left: 5px;
+  margin-left: 5px;
 }

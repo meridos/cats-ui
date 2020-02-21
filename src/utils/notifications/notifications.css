@@ -1,13 +1,14 @@
 .ajs-message {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .ajs-info {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #31708f;
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #31708f;
 }
 
-.ajs-error, .ajs-success {
-    color: #fff;
+.ajs-error,
+.ajs-success {
+  color: #fff;
 }

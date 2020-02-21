@@ -6,7 +6,8 @@
   font-size: 6rem;
 }
 
-.button, .button:not(:first-child) {
+.button,
+.button:not(:first-child) {
   margin-left: 1rem;
   margin-bottom: 1rem;
 }
