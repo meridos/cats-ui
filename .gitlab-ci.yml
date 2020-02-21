@@ -1,4 +1,3 @@
-
 stages:
   - build
   - publish
@@ -16,6 +15,9 @@ build:static:
     - npm install --production
   script:
     - npm run build
+  only:
+    - master
+    - merge_requests
 
 build:docker-master:
   image: docker:latest
