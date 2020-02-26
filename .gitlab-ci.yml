@@ -1,0 +1,83 @@
+stages:
+  - build
+  - publish
+  - deploy
+
+build:static:
+  image: node:10.19
+  stage: build
+  before_script:
+    - npm install --production
+  script:
+    - npm run build
+  artifacts:
+    paths:
+    - build/
+    expire_in: 1 week
+  only:
+    - master
+    - merge_requests
+
+build:docker-master:
+  image: docker:latest
+  stage: publish
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:prod" .
+    - docker push "$CI_REGISTRY_IMAGE:prod"
+  dependencies:
+    - build:static
+  only:
+    - master
+
+build:docker-qa:
+  image: docker:latest
+  stage: publish
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:qa" .
+    - docker push "$CI_REGISTRY_IMAGE:qa"
+  dependencies:
+    - build:static
+  only:
+    - merge_requests
+
+deploy:docker-master:
+  image: docker:latest
+  stage: deploy
+  services:
+    - docker:dind
+  before_script:
+    - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
+    - eval $(ssh-agent -s)
+    - echo "$DEPLOY_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  script:
+    - ssh $USER@$SERVER "(docker rm -f cats-ui) || true; docker rmi "$CI_REGISTRY_IMAGE:prod"; docker run -d --name cats-ui --restart always -p 8080:8080 \"$CI_REGISTRY_IMAGE:prod\""
+  only:
+    - master
+
+deploy:docker-qa:
+  image: docker:latest
+  stage: deploy
+  services:
+    - docker:dind
+  before_script:
+    - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
+    - eval $(ssh-agent -s)
+    - echo "$DEPLOY_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  script:
+    - ssh $USER@$SERVER "(docker rm -f cats-ui-qa) || true; docker rmi "$CI_REGISTRY_IMAGE:qa"; docker run -d --name cats-ui-qa --restart always -p 8081:8080 \"$CI_REGISTRY_IMAGE:qa\""
+  only:
+    - merge_requests

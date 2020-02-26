@@ -9,8 +9,8 @@
     "eject": "react-scripts eject",
     "lint": "npm run lint:js",
     "deploy": "npm run build && ./scripts/deploy.sh",
-    "lint:js": "eslint src/* --ext .js,.jsx",
-    "lint:format:fix": "prettier --config ./.prettierrc.yml \"src/**/*.{js,jsx,json,css,scss,md}\" --write"
+    "lint:js": "npx eslint src/* --ext .js,.jsx,.css",
+    "lint:format:fix": "prettier --config ./.prettierrc.yml \"src/**/*.{js,jsx,json,css,md}\" --write"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "1.2.27",
