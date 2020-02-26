@@ -16,12 +16,14 @@ export function CatsList({ searchValue }) {
   const [error, setError] = useState(null);
 
   const query = useQuery();
-  const genderFilter = query.get('gender');
+  const { pathname } = useLocation();
+
+  const filter = query.get('gender');
 
   useEffect(() => {
     const apiMethod = searchValue
-      ? CatsApi.search(searchValue, genderFilter)
-      : CatsApi.getAll(genderFilter);
+      ? CatsApi.search(searchValue, filter)
+      : CatsApi.getAll(filter);
 
     setLoading(true);
     apiMethod
@@ -35,12 +37,24 @@ export function CatsList({ searchValue }) {
       .finally(() => {
         setLoading(false);
       });
-  }, [searchValue, genderFilter]);
+  }, [searchValue, filter]);
+
+  const changeFilter = value => {
+    const gender = value ? `gender=${value}` : '';
+    let search = [gender].filter(v => v);
+
+    search = search ? `?${search.join('&')}` : null;
+
+    history.push({
+      pathname,
+      search,
+    });
+  };
 
   return isLoading ? null : error ? (
     <Error />
   ) : data?.count ? (
-    <Results data={data} />
+    <Results data={data} filter={filter} changeFilter={changeFilter} />
   ) : searchValue ? (
     <NoResults text="Упс! Ничего не нашли" name={searchValue} />
   ) : null;
@@ -84,24 +98,7 @@ NoResults.propTypes = {
   name: PropTypes.string.isRequired,
 };
 
-function Results({ data }) {
-  const query = useQuery();
-  const [filter, setFilter] = useState(query.get('gender'));
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    const gender = filter ? `gender=${filter}` : '';
-    let search = [gender].filter(v => v);
-
-    search = search ? `?${search.join('&')}` : null;
-
-    history.push({
-      pathname,
-      search,
-    });
-    // eslint-disable-next-line
-  }, [filter]);
-
+function Results({ data, filter, changeFilter }) {
   return (
     <>
       <section className={classNames('section', style.filter)}>
@@ -109,7 +106,11 @@ function Results({ data }) {
           <div className="columns">
             <div className="column is-2"></div>
             <div className="column">
-              <Filter count={data.count} value={filter} onChange={setFilter} />
+              <Filter
+                count={data.count}
+                value={filter}
+                onChange={changeFilter}
+              />
             </div>
           </div>
         </div>
@@ -131,6 +132,8 @@ function Results({ data }) {
 }
 Results.propTypes = {
   data: PropTypes.object.isRequired,
+  filter: PropTypes.oneOf([null, 'male', 'female', 'unisex']),
+  changeFilter: PropTypes.func.isRequired,
 };
 
 function Groups(props) {

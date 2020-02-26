@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -13,6 +13,10 @@ export function Header({ searchValue }) {
   const location = useLocation();
   const [searchQuery, setSearchQuery] = useState(searchValue || '');
   const [isButtonDisabled, setButtonDisabled] = useState(!searchQuery);
+
+  useEffect(() => {
+    setSearchQuery(searchValue);
+  }, [searchValue]);
 
   function onChangeSearch({ target: { value } }) {
     const error = getErrorValidation(value, validations);
