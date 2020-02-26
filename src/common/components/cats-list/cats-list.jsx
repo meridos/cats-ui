@@ -99,6 +99,7 @@ function Results({ data }) {
       pathname,
       search,
     });
+    // eslint-disable-next-line
   }, [filter]);
 
   return (
