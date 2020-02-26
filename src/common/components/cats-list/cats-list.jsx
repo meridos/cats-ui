@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { CatsApi } from '../../../api/cats';
@@ -7,16 +7,21 @@ import { CatLogo } from '../cat-logo';
 import { GenderIcon } from '../gender-icon';
 import style from './cats-list.module.css';
 import { Filter } from '../filter/filter';
+import { useQuery } from '../../../utils/query';
+import history from '../../../utils/history';
 
 export function CatsList({ searchValue }) {
   const [isLoading, setLoading] = useState(true);
   const [data, setGroups] = useState(null);
   const [error, setError] = useState(null);
 
+  const query = useQuery();
+  const genderFilter = query.get('gender');
+
   useEffect(() => {
     const apiMethod = searchValue
-      ? CatsApi.search(searchValue)
-      : CatsApi.getAll();
+      ? CatsApi.search(searchValue, genderFilter)
+      : CatsApi.getAll(genderFilter);
 
     setLoading(true);
     apiMethod
@@ -30,7 +35,7 @@ export function CatsList({ searchValue }) {
       .finally(() => {
         setLoading(false);
       });
-  }, [searchValue]);
+  }, [searchValue, genderFilter]);
 
   return isLoading ? null : error ? (
     <Error />
@@ -80,16 +85,34 @@ NoResults.propTypes = {
 };
 
 function Results({ data }) {
+  const query = useQuery();
+  const [filter, setFilter] = useState(query.get('gender'));
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const gender = filter ? `gender=${filter}` : '';
+    let search = [gender].filter(v => v);
+
+    search = search ? `?${search.join('&')}` : null;
+
+    history.push({
+      pathname,
+      search,
+    });
+  }, [filter]);
+
   return (
     <>
-      <div className={classNames('container', style.filter)}>
-        <div className="columns ">
-          <div className="column is-2"></div>
-          <div className="column">
-            <Filter count={data.count} />
+      <section className={classNames('section', style.filter)}>
+        <div className="container">
+          <div className="columns">
+            <div className="column is-2"></div>
+            <div className="column">
+              <Filter count={data.count} value={filter} onChange={setFilter} />
+            </div>
           </div>
         </div>
-      </div>
+      </section>
       <section className="section">
         <div className="container">
           <div className="columns">

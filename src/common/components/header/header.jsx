@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import history from '../../../utils/history';
@@ -10,6 +10,7 @@ import { ValidationsContext } from '../../contexts/validations';
 
 export function Header({ searchValue }) {
   const validations = useContext(ValidationsContext);
+  const location = useLocation();
   const [searchQuery, setSearchQuery] = useState(searchValue || '');
   const [isButtonDisabled, setButtonDisabled] = useState(!searchQuery);
 
@@ -28,7 +29,11 @@ export function Header({ searchValue }) {
 
   function onSearch(event) {
     event.preventDefault();
-    history.push(`/search/${searchQuery}`);
+
+    history.push({
+      pathname: `/search/${searchQuery}`,
+      search: location.search,
+    });
   }
 
   return (
