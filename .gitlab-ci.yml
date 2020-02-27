@@ -4,8 +4,8 @@ stages:
   - deploy
 
 variables:
-  CONTAINER_PROD_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
-  CONTAINER_QA_NAME: $CI_REGISTRY_IMAGE:qa-$CI_COMMIT_TAG-$CI_COMMIT_REF_NAME
+  CONTAINER_PROD_NAME: "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME"
+  CONTAINER_QA_NAME: "$CI_REGISTRY_IMAGE:qa-$CI_COMMIT_REF_NAME"
 
 build:static:
   image: node:10.19
@@ -30,8 +30,8 @@ publish:docker-prod:
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker build --pull -t "$CONTAINER_PROD_NAME" .
-    - docker push "$CONTAINER_PROD_NAME"
+    - docker build --pull -t $CONTAINER_PROD_NAME .
+    - docker push $CONTAINER_PROD_NAME
   dependencies:
     - build:static
   only:
@@ -45,8 +45,8 @@ publish:docker-qa:
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker build --pull -t "$CONTAINER_QA_NAME" .
-    - docker push "$CONTAINER_QA_NAME"
+    - docker build --pull -t $CONTAINER_QA_NAME .
+    - docker push $CONTAINER_QA_NAME
   dependencies:
     - build:static
   only:
@@ -65,7 +65,7 @@ deploy:docker-prod:
     - chmod 700 ~/.ssh
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
-    - ssh $USER@$SERVER "(docker rm -f cats-ui) || true; docker run -d --name cats-ui --restart always -p 8080:8080 \"$CONTAINER_PROD_NAME\""
+    - ssh $USER@$SERVER "(docker rm -f cats-ui) || true; docker run -d --name cats-ui --restart always -p 8080:8080 $CONTAINER_PROD_NAME"
   only:
     - tags
 
@@ -82,6 +82,6 @@ deploy:docker-qa:
     - chmod 700 ~/.ssh
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
-    - ssh $USER@$SERVER "(docker rm -f cats-ui-qa) || true; docker run -d --name cats-ui-qa --restart always -p 8081:8080 \"$CONTAINER_QA_NAME\""
+    - ssh $USER@$SERVER "(docker rm -f cats-ui-qa) || true; docker run -d --name cats-ui-qa --restart always -p 8081:8080 $CONTAINER_QA_NAME"
   only:
     - merge_requests
