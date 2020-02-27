@@ -1,20 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { CatsApi } from '../../../api/cats';
 import { CatLogo } from '../cat-logo';
 import { GenderIcon } from '../gender-icon';
 import style from './cats-list.module.css';
+import { Filter } from '../filter/filter';
+import { useQuery } from '../../../utils/query';
+import history from '../../../utils/history';
 
 export function CatsList({ searchValue }) {
   const [isLoading, setLoading] = useState(true);
   const [data, setGroups] = useState(null);
   const [error, setError] = useState(null);
 
+  const query = useQuery();
+  const { pathname } = useLocation();
+
+  const filter = query.get('gender');
+
   useEffect(() => {
     const apiMethod = searchValue
-      ? CatsApi.search(searchValue)
-      : CatsApi.getAll();
+      ? CatsApi.search(searchValue, filter)
+      : CatsApi.getAll(filter);
 
     setLoading(true);
     apiMethod
@@ -28,12 +37,24 @@ export function CatsList({ searchValue }) {
       .finally(() => {
         setLoading(false);
       });
-  }, [searchValue]);
+  }, [searchValue, filter]);
+
+  const changeFilter = value => {
+    const gender = value ? `gender=${value}` : '';
+    let search = [gender].filter(v => v);
+
+    search = search ? `?${search.join('&')}` : null;
+
+    history.push({
+      pathname,
+      search,
+    });
+  };
 
   return isLoading ? null : error ? (
     <Error />
   ) : data?.count ? (
-    <Results data={data} />
+    <Results data={data} filter={filter} changeFilter={changeFilter} />
   ) : searchValue ? (
     <NoResults text="Упс! Ничего не нашли" name={searchValue} />
   ) : null;
@@ -77,24 +98,42 @@ NoResults.propTypes = {
   name: PropTypes.string.isRequired,
 };
 
-function Results(props) {
+function Results({ data, filter, changeFilter }) {
   return (
-    <section className="section">
-      <div className="container">
-        <div className="columns">
-          <div className="column is-2">
-            <CatLogo class="is-hidden-mobile" />
-          </div>
-          <div className="column">
-            <Groups groups={props.data.groups} />
+    <>
+      <section className={classNames('section', style.filter)}>
+        <div className="container">
+          <div className="columns">
+            <div className="column is-2"></div>
+            <div className="column">
+              <Filter
+                count={data.count}
+                value={filter}
+                onChange={changeFilter}
+              />
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+      <section className="section">
+        <div className="container">
+          <div className="columns">
+            <div className="column is-2">
+              <CatLogo class="is-hidden-mobile" />
+            </div>
+            <div className="column">
+              <Groups groups={data.groups} />
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
 Results.propTypes = {
   data: PropTypes.object.isRequired,
+  filter: PropTypes.oneOf([null, 'male', 'female', 'unisex']),
+  changeFilter: PropTypes.func.isRequired,
 };
 
 function Groups(props) {
