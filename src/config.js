@@ -1,7 +1,7 @@
 const local = {
-  catsApi: 'http://localhost:6003',
-  reactionApi: 'http://localhost:6002',
-  photosApi: 'http://localhost:6001',
+  catsApi: 'http://localhost:3003',
+  reactionApi: 'http://localhost:3002',
+  photosApi: 'http://localhost:3001',
 };
 const production = {
   catsApi: '/api/core',
