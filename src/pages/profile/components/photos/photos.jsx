@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import { PhotosApi } from '../../../../api/photos';
 import { notify } from '../../../../utils/notifications/notifications';
 import style from './photos.module.css';
@@ -32,12 +33,19 @@ export function Photos({ catId, links: _links }) {
     </section>
   );
 }
+Photos.propTypes = {
+  catId: PropTypes.number.isRequired,
+  links: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
 
 function PhotoList({ links }) {
   const photos = links.map((link, i) => <Photo link={link} key={i} />);
 
   return photos;
 }
+PhotoList.propTypes = {
+  links: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
 
 function Photo({ link }) {
   return (
@@ -47,6 +55,9 @@ function Photo({ link }) {
     ></div>
   );
 }
+Photo.propTypes = {
+  link: PropTypes.string.isRequired,
+};
 
 function Upload({ catId, onComplete }) {
   const onChange = event => {
@@ -80,3 +91,7 @@ function Upload({ catId, onComplete }) {
     </div>
   );
 }
+Upload.propTypes = {
+  catId: PropTypes.number.isRequired,
+  onComplete: PropTypes.func.isRequired,
+};
