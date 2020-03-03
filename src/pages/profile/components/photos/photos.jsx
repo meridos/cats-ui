@@ -51,7 +51,7 @@ function Photo({ link }) {
   return (
     <div
       className={classNames(style.photo)}
-      style={{ backgroundImage: `url(http://localhost:8080${link})` }}
+      style={{ backgroundImage: `url(${link})` }}
     ></div>
   );
 }
