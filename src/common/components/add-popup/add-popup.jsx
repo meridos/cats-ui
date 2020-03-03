@@ -25,9 +25,9 @@ export function AddPopup() {
 }
 
 function Form({ validations }) {
-  const { name } = useParams() || '';
+  const { name } = useParams();
 
-  const [items, setItems] = useState([{ ...newItemData, name }]);
+  const [items, setItems] = useState([{ ...newItemData, name: name || '' }]);
 
   return (
     <div className="column">
@@ -74,6 +74,7 @@ function onChange(items, setItems, index, validations, newState) {
 
   const newItems = items.slice();
 
+  newState.name = newState.name || '';
   newItems[index] = newState;
   setItems(newItems);
 }
