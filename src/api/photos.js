@@ -11,7 +11,7 @@ export class PhotosApi {
    * @returns {Promise<Object>} Объект с списком ссылок на фотографии
    */
   static getCatPhoto(catId) {
-    return api.get(`/cats/${catId}/photos`);
+    return api.get(`/cats/${catId}/photos`).then(({ images }) => images);
   }
 
   /**

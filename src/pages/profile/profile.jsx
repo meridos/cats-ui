@@ -8,22 +8,34 @@ import { GenderIcon } from '../../common/components/gender-icon';
 import { CatsApi } from '../../api/cats';
 import { Description } from './components/description';
 import { ReactionButton } from './components/reaction-button/reaction-button';
+import { Photos } from './components/photos/photos';
 import style from './profile.module.css';
+import { PhotosApi } from '../../api/photos';
+import { notify } from '../../utils/notifications/notifications';
 
 export function ProfilePage() {
   const match = useRouteMatch();
   const { catId } = useParams();
   const [catInfo, updateInfo] = useState(null);
+  const [catPhotos, updateCatPhotos] = useState([]);
 
   const updateInfoHandler = newCatInfo =>
     updateInfo({ ...catInfo, ...newCatInfo });
 
   useEffect(() => {
     loadCatProfile(catId, updateInfo);
+    loadCatPhotos(catId, updateCatPhotos);
   }, [catId]);
 
   const info = catInfo ? (
-    <Info catInfo={catInfo} path={match.path} updateInfo={updateInfoHandler} />
+    <>
+      <Info
+        catInfo={catInfo}
+        path={match.path}
+        updateInfo={updateInfoHandler}
+      />
+      <Photos catId={catInfo.id} links={catPhotos} />
+    </>
   ) : null;
 
   return (
@@ -36,6 +48,14 @@ export function ProfilePage() {
 
 function loadCatProfile(id, updateHandler) {
   return CatsApi.getById(id).then(({ cat }) => updateHandler(cat));
+}
+
+function loadCatPhotos(id, updateHandler) {
+  return PhotosApi.getCatPhoto(id)
+    .then(links => updateHandler(links))
+    .catch(message => {
+      notify.error(message || 'Ошибка получения фотографий');
+    });
 }
 
 function Info({ catInfo, path, updateInfo }) {
@@ -96,6 +116,7 @@ function Title({ catInfo, updateInfo }) {
       />
     </>
   ) : null;
+
   return (
     <div className={classNames('title', 'is-3', style.title)}>
       Значение имени {catInfo.name}

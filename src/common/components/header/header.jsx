@@ -15,7 +15,7 @@ export function Header({ searchValue }) {
   const [isButtonDisabled, setButtonDisabled] = useState(!searchQuery);
 
   useEffect(() => {
-    setSearchQuery(searchValue);
+    setSearchQuery(searchValue || '');
   }, [searchValue]);
 
   function onChangeSearch({ target: { value } }) {
@@ -27,7 +27,7 @@ export function Header({ searchValue }) {
       return;
     }
 
-    setSearchQuery(value);
+    setSearchQuery(value || '');
     setButtonDisabled(!value);
   }
 
