@@ -1,9 +1,7 @@
-import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import style from './header.module.css';
 import history from '../../../utils/history';
 import { Icon } from '../icon/icon';
 import { getErrorValidation } from '../../../utils/validation';
@@ -12,8 +10,13 @@ import { ValidationsContext } from '../../contexts/validations';
 
 export function Header({ searchValue }) {
   const validations = useContext(ValidationsContext);
+  const location = useLocation();
   const [searchQuery, setSearchQuery] = useState(searchValue || '');
   const [isButtonDisabled, setButtonDisabled] = useState(!searchQuery);
+
+  useEffect(() => {
+    setSearchQuery(searchValue);
+  }, [searchValue]);
 
   function onChangeSearch({ target: { value } }) {
     const error = getErrorValidation(value, validations);
@@ -30,13 +33,15 @@ export function Header({ searchValue }) {
 
   function onSearch(event) {
     event.preventDefault();
-    history.push(`/search/${searchQuery}`);
+
+    history.push({
+      pathname: `/search/${searchQuery}`,
+      search: location.search,
+    });
   }
 
   return (
-    <section
-      className={classnames('section', 'has-background-light', style.header)}
-    >
+    <section className="section has-background-light">
       <div className="container">
         <div className="columns">
           <div className="column is-2 has-text-right-desktop">

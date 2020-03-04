@@ -82,14 +82,16 @@ export class CatsApi {
   /**
    * Получение списка всех имен котов
    * http://meowle.testops.ru:3001/api-docs-ui/#/default/get_cats_all
-   * @param {!string} order Сортировка (asc | desc)
    * @param {string=} gender Фильтр по полу
+   * @param {!string} order Сортировка (asc | desc)
    * @returns {Promise<Groups>} Промис с группировкой имен котов
    */
-  static getAll(order, gender) {
+  static getAll(gender, order) {
     return api.get('/cats/all', {
-      order,
-      gender,
+      params: {
+        order,
+        gender,
+      },
     });
   }
 }
