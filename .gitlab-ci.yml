@@ -15,7 +15,6 @@ build:static:
   before_script:
     - npm install --production
   script:
-    - env
     - npm run build
   artifacts:
     paths:
