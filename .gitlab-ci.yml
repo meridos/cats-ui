@@ -69,7 +69,7 @@ deploy:docker-prod:
     - chmod 700 ~/.ssh
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
-    - ssh $USER@$SERVER "(docker rm -f $CONTAINER_PROD_NAME) || true; docker pull $IMAGE_PROD_NAME; docker run -d --name $CONTAINER_PROD_NAME --net=cats --restart always -p 8080:8080 $IMAGE_PROD_NAME"
+    - ssh $USER@$SERVER "(docker rm -f $CONTAINER_PROD_NAME) || true; docker pull $IMAGE_PROD_NAME; docker run -d --name $CONTAINER_PROD_NAME --net=cats --restart always -p 8080:8080 -v /root/data/public/photos:/static/photos $IMAGE_PROD_NAME"
   only:
     - tags
 
@@ -86,7 +86,7 @@ deploy:docker-qa:
     - chmod 700 ~/.ssh
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
-    - ssh $USER@$SERVER "(docker rm -f $CONTAINER_QA_NAME) || true; docker pull $IMAGE_QA_NAME; docker run -d --name $CONTAINER_QA_NAME --net=cats --restart always -p 8081:8080 $IMAGE_QA_NAME"
+    - ssh $USER@$SERVER "(docker rm -f $CONTAINER_QA_NAME) || true; docker pull $IMAGE_QA_NAME; docker run -d --name $CONTAINER_QA_NAME --net=cats --restart always -p 8081:8080 -v /root/data/public/photos:/static/photos $IMAGE_QA_NAME"
   only: [merge_requests]
   except:
     variables:
