@@ -1,6 +1,5 @@
 import React from 'react';
 import { faSort } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import style from './filter.module.css';
