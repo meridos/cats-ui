@@ -77,6 +77,7 @@ Items.propTypes = {
 function Item({ text, onClick }) {
   return (
     <a
+      href="#none"
       className="dropdown-item"
       tabIndex="0"
       onClick={e => {
