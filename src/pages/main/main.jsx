@@ -12,6 +12,7 @@ import {
 import { withRouter, Link } from 'react-router-dom';
 import { Icon } from '../../common/components/icon/icon';
 import { ValidationsContext } from '../../common/contexts/validations';
+import { Suggestions } from '../../common/components/suggestions/suggestions';
 import { getErrorValidation } from '../../utils/validation';
 import { notify } from '../../utils/notifications/notifications';
 
@@ -23,6 +24,7 @@ class MainPageWithoutRoute extends React.Component {
       some: 2,
     };
     this.style = classNames.bind(css);
+    this.inputRef = React.createRef();
   }
 
   // Template methods
@@ -77,6 +79,10 @@ class MainPageWithoutRoute extends React.Component {
     this._search();
   };
 
+  onSelectSuggestion = suggestion => {
+    this.setState({ searchName: suggestion });
+  };
+
   // Private methods
 
   _search() {
@@ -119,15 +125,22 @@ class MainPageWithoutRoute extends React.Component {
                 <div>
                   <div className="field">
                     <div className="control">
-                      <input
-                        type="text"
-                        className="input"
-                        placeholder="Введите часть имени"
-                        autoComplete="off"
-                        disabled={!this.context}
-                        value={this.state.searchName}
-                        onChange={this.onChange}
-                      />
+                      <Suggestions
+                        onSelect={this.onSelectSuggestion}
+                        inputRef={this.inputRef}
+                        inputValue={this.state.searchName}
+                      >
+                        <input
+                          type="text"
+                          className="input"
+                          placeholder="Введите часть имени"
+                          autoComplete="off"
+                          ref={this.inputRef}
+                          disabled={!this.context}
+                          value={this.state.searchName}
+                          onChange={this.onChange}
+                        />
+                      </Suggestions>
                     </div>
                   </div>
                   <div className="field">
