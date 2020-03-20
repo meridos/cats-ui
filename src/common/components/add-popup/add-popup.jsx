@@ -88,8 +88,16 @@ function onSubmit(state, event) {
   }
 
   CatsApi.add(state)
-    .then(_ => {
+    .then(({ cats }) => {
       onClose();
+
+      let names = cats.map(({ name }) => name);
+
+      if (names.length > 1) {
+        notify.success(`Имена: ${names.join(', ')} добавлены`);
+      } else {
+        notify.success(`Имя: ${names[0]} добавлено`);
+      }
     })
     .catch(message => {
       notify.error(message || 'Что-то пошло не так');

@@ -7,12 +7,14 @@ import { Icon } from '../icon/icon';
 import { getErrorValidation } from '../../../utils/validation';
 import { notify } from '../../../utils/notifications/notifications';
 import { ValidationsContext } from '../../contexts/validations';
+import { Suggestions } from '../suggestions/suggestions';
 
 export function Header({ searchValue }) {
   const validations = useContext(ValidationsContext);
   const location = useLocation();
   const [searchQuery, setSearchQuery] = useState(searchValue || '');
   const [isButtonDisabled, setButtonDisabled] = useState(!searchQuery);
+  const inputRef = React.createRef();
 
   useEffect(() => {
     setSearchQuery(searchValue || '');
@@ -40,6 +42,10 @@ export function Header({ searchValue }) {
     });
   }
 
+  function onSelectSuggestion(suggestion) {
+    setSearchQuery(suggestion);
+  }
+
   return (
     <section className="section has-background-light">
       <div className="container">
@@ -54,12 +60,19 @@ export function Header({ searchValue }) {
           <div className="column">
             <form className="field has-addons" onSubmit={onSearch}>
               <div className="control is-expanded">
-                <input
-                  type="text"
-                  className="input"
-                  value={searchQuery}
-                  onChange={onChangeSearch}
-                />
+                <Suggestions
+                  onSelect={onSelectSuggestion}
+                  inputRef={inputRef}
+                  inputValue={searchQuery}
+                >
+                  <input
+                    type="text"
+                    className="input"
+                    ref={inputRef}
+                    value={searchQuery}
+                    onChange={onChangeSearch}
+                  />
+                </Suggestions>
               </div>
               <div className="control">
                 <button className="button" disabled={isButtonDisabled}>
