@@ -12,16 +12,16 @@
     <pre id='api'></pre>
 
     <script type="text/javascript">
-    [
-        ['ui', '/version.json'],
-        ['api', '/api/core/status']
-    ].forEach(([name, url]) => {
-        fetch(url)
+        fetch('/version.json')
             .then(r => r.json())
-            .then(type => {
-                document.getElementById(name).innerText = JSON.stringify(type, null, 4);
+            .then(ui => {
+                document.getElementById('ui').innerText = JSON.stringify(ui, null, 4);
             })
-    })
+        fetch('https://cats.bobrovartem.ru/api/core/status')
+            .then(r => r.json())
+            .then(api => {
+                document.getElementById('api').innerText = JSON.stringify({version: api.version}, null, 4);
+            })
     </script>
 </body>
 </html>
