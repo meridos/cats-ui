@@ -1,18 +1,14 @@
 import React from 'react';
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { faMinus } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Icon } from '../icon/icon';
 import styles from './item.module.css';
 
-export function Item({ index, isAdd, state, onChange, onAdd, onRemove }) {
-  const buttonAction = (
-    <button
-      type="button"
-      className="button is-light"
-      onClick={isAdd ? onAdd : onRemove}
-    >
-      <Icon icon={isAdd ? faPlus : faMinus} />
+export function Item({ index, state, onChange, onRemove }) {
+  const buttonActionRemove = (
+    <button type="button" className="button is-light" onClick={onRemove}>
+      <Icon icon={faMinus} />
     </button>
   );
 
@@ -60,8 +56,8 @@ export function Item({ index, isAdd, state, onChange, onAdd, onRemove }) {
               onChange={onChange}
             />
           </div>
-          <div className={classNames('control', styles['button-add-remove'])}>
-            {buttonAction}
+          <div className={classNames('control', styles['button-remove'])}>
+            {buttonActionRemove}
           </div>
         </div>
       </div>
@@ -70,10 +66,8 @@ export function Item({ index, isAdd, state, onChange, onAdd, onRemove }) {
 }
 Item.propTypes = {
   index: PropTypes.number.isRequired,
-  isAdd: PropTypes.bool.isRequired,
   state: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
-  onAdd: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
 };
 

@@ -8,6 +8,9 @@ import { ValidationsContext } from '../../contexts/validations';
 import { getErrorValidation } from '../../../utils/validation';
 import { notify } from '../../../utils/notifications/notifications';
 import { useParams } from 'react-router-dom';
+import { Icon } from '../icon/icon';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import classNames from 'classnames';
 
 const newItemData = {
   name: '',
@@ -29,6 +32,16 @@ function Form({ validations }) {
 
   const [items, setItems] = useState([{ ...newItemData, name: name || '' }]);
 
+  const buttonActionAdd = (
+    <button
+      type="button"
+      className="button is-light is-pulled-right"
+      onClick={onAdd.bind(null, items, setItems)}
+    >
+      <Icon icon={faPlus} />
+    </button>
+  );
+
   return (
     <div className="column">
       <form onSubmit={onSubmit.bind(null, items)}>
@@ -39,10 +52,10 @@ function Form({ validations }) {
             state={state}
             isAdd={i === items.length - 1}
             onChange={onChange.bind(null, items, setItems, i, validations)}
-            onAdd={_ => setItems([...items, newItemData])}
             onRemove={onRemove.bind(null, items, setItems, i)}
           />
         ))}
+        <div className={classNames('control')}>{buttonActionAdd}</div>
         <button className="button is-warning">Добавить</button>
       </form>
     </div>
@@ -63,6 +76,10 @@ function onRemove(items, setItems, index) {
 
   setItems(newItems);
 }
+
+let onAdd = function(items, setItems) {
+  setItems([...items, newItemData]);
+};
 
 function onChange(items, setItems, index, validations, newState) {
   const error = getErrorValidation(newState.name, validations);
