@@ -78,7 +78,7 @@ function OrderComponent({ value, onChange }) {
             value={value || ''}
             onChange={({ target: { value } }) => onChange(value || null)}
           >
-            <option value="asc">По возврастанию</option>
+            <option value="asc">По возрастанию</option>
             <option value="desc">По убыванию</option>
           </select>
         </div>
