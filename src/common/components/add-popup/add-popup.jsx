@@ -50,7 +50,7 @@ function Form({ validations }) {
             key={i}
             index={i}
             state={state}
-            isAdd={i === items.length - 1}
+            isSingle={items.length === 1}
             onChange={onChange.bind(null, items, setItems, i, validations)}
             onRemove={onRemove.bind(null, items, setItems, i)}
           />

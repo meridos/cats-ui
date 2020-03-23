@@ -5,9 +5,14 @@ import classNames from 'classnames';
 import { Icon } from '../icon/icon';
 import styles from './item.module.css';
 
-export function Item({ index, state, onChange, onRemove }) {
+export function Item({ index, isSingle, state, onChange, onRemove }) {
   const buttonActionRemove = (
-    <button type="button" className="button is-light" onClick={onRemove}>
+    <button
+      type="button"
+      className="button is-light"
+      disabled={isSingle}
+      onClick={onRemove}
+    >
       <Icon icon={faMinus} />
     </button>
   );
@@ -66,6 +71,7 @@ export function Item({ index, state, onChange, onRemove }) {
 }
 Item.propTypes = {
   index: PropTypes.number.isRequired,
+  isSingle: PropTypes.bool.isRequired,
   state: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
