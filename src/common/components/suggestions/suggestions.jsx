@@ -95,7 +95,7 @@ Item.propTypes = {
 };
 
 function EmptyItem() {
-  return <div className="dropdown-item">Ничего не найдено</div>;
+  return <div className="dropdown-item">Нет совпадений</div>;
 }
 
 function initInputActions(inputRef, setDropdownActive) {
