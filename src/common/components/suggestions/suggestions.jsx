@@ -15,6 +15,7 @@ export function Suggestions({ children, inputValue, inputRef, onSelect }) {
 
   useEffect(() => {
     if (!inputValue) {
+      setIsFirstSearch(true);
       return;
     }
 
