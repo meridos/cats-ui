@@ -10,7 +10,6 @@ import { notify } from '../../../utils/notifications/notifications';
 import { useParams } from 'react-router-dom';
 import { Icon } from '../icon/icon';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import classNames from 'classnames';
 
 const newItemData = {
   name: '',
@@ -35,7 +34,7 @@ function Form({ validations }) {
   const buttonActionAdd = (
     <button
       type="button"
-      className="button is-light is-pulled-right"
+      className="button is-light"
       onClick={onAdd.bind(null, items, setItems)}
     >
       <Icon icon={faPlus} />
@@ -43,22 +42,20 @@ function Form({ validations }) {
   );
 
   return (
-    <div className="column">
-      <form onSubmit={onSubmit.bind(null, items)}>
-        {items.map((state, i) => (
-          <Item
-            key={i}
-            index={i}
-            state={state}
-            isSingle={items.length === 1}
-            onChange={onChange.bind(null, items, setItems, i, validations)}
-            onRemove={onRemove.bind(null, items, setItems, i)}
-          />
-        ))}
-        <div className="has-text-right">{buttonActionAdd}</div>
-        <button className="button is-warning">Добавить</button>
-      </form>
-    </div>
+    <form onSubmit={onSubmit.bind(null, items)}>
+      {items.map((state, i) => (
+        <Item
+          key={i}
+          index={i}
+          state={state}
+          isSingle={items.length === 1}
+          onChange={onChange.bind(null, items, setItems, i, validations)}
+          onRemove={onRemove.bind(null, items, setItems, i)}
+        />
+      ))}
+      <div className="has-text-right">{buttonActionAdd}</div>
+      <button className="button is-warning">Добавить</button>
+    </form>
   );
 }
 Form.propTypes = {
