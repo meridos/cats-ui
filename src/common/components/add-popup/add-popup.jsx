@@ -55,7 +55,7 @@ function Form({ validations }) {
             onRemove={onRemove.bind(null, items, setItems, i)}
           />
         ))}
-        <div className={classNames('control')}>{buttonActionAdd}</div>
+        <div className="has-text-right">{buttonActionAdd}</div>
         <button className="button is-warning">Добавить</button>
       </form>
     </div>
