@@ -42,7 +42,7 @@ function Form({ validations }) {
   );
 
   return (
-    <form onSubmit={onSubmit.bind(null, items)}>
+    <form onSubmit={onSubmit.bind(null, items, setItems)}>
       {items.map((state, i) => (
         <Item
           key={i}
@@ -93,7 +93,7 @@ function onChange(items, setItems, index, validations, newState) {
   setItems(newItems);
 }
 
-function onSubmit(state, event) {
+function onSubmit(state, setState, event) {
   event.preventDefault();
 
   if (!isValidState(state)) {
@@ -103,14 +103,31 @@ function onSubmit(state, event) {
 
   CatsApi.add(state)
     .then(({ cats }) => {
-      onClose();
+      const successCatNames = [];
+      const errorsCats = [];
 
-      let names = cats.map(({ name }) => name);
+      cats.forEach(item => {
+        if (item.id) {
+          successCatNames.push(item.name);
+        } else {
+          errorsCats.push(item);
+        }
+      });
 
-      if (names.length > 1) {
-        notify.success(`Имена: ${names.join(', ')} добавлены`);
-      } else {
-        notify.success(`Имя: ${names[0]} добавлено`);
+      if (successCatNames.length > 1) {
+        notify.success(`Имена: ${successCatNames.join(', ')} добавлены`);
+      } else if (successCatNames.length === 1) {
+        notify.success(`Имя: ${successCatNames[0]} добавлено`);
+      }
+
+      errorsCats.forEach(item => {
+        notify.error(`${item.cat.name} - ${item.errorDescription}`);
+      });
+
+      removeFormNames(state, setState, successCatNames);
+
+      if (errorsCats.length === 0) {
+        onClose();
       }
     })
     .catch(message => {
@@ -120,4 +137,12 @@ function onSubmit(state, event) {
 
 function isValidState(state) {
   return state.every(item => item.name && item.gender);
+}
+
+function removeFormNames(state, setState, names) {
+  const namesSet = new Set(names.map(name => name.toLowerCase()));
+
+  const result = state.filter(({ name }) => !namesSet.has(name.toLowerCase()));
+
+  setState(result);
 }
