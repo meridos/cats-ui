@@ -8,6 +8,7 @@ import {
   faHeart,
   faHeartBroken,
   faPlus,
+  faBars,
 } from '@fortawesome/free-solid-svg-icons';
 import { withRouter, Link } from 'react-router-dom';
 import { Icon } from '../../common/components/icon/icon';
@@ -46,7 +47,7 @@ class MainPageWithoutRoute extends React.Component {
           <span>Найти имя коту</span>
         </button>
         <Link to="/all-names" className={className}>
-          <Icon icon={faSearch} />
+          <Icon icon={faBars} />
           <span>Все имена</span>
         </Link>
         <Link to="/top-names" className={className}>
@@ -158,6 +159,7 @@ class MainPageWithoutRoute extends React.Component {
     );
   }
 }
+
 MainPageWithoutRoute.contextType = ValidationsContext;
 
 export const MainPage = withRouter(MainPageWithoutRoute);
