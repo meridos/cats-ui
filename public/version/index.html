@@ -17,7 +17,7 @@
             .then(ui => {
                 document.getElementById('ui').innerText = JSON.stringify(ui, null, 4);
             })
-        fetch('https://cats.bobrovartem.ru/api/core/status')
+        fetch('/api/core/status')
             .then(r => r.json())
             .then(api => {
                 document.getElementById('api').innerText = JSON.stringify({version: api.version}, null, 4);
