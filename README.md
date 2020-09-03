@@ -1,15 +1,14 @@
 ## Ссылки приложения
 
-PROD - https://cats.bobrovartem.ru
+PROD - http://cats.vm-fintech01.tcsbank.ru
 
-QA - https://cats-qa.bobrovartem.ru (только UI приложение, апи и бд берется с прода)
+QA - http://cats-qa.vm-fintech01.tcsbank.ru
 
 Версия приложения:
 
-PROD [/version](https://cats.bobrovartem.ru/version)
+PROD [/version](http://cats.vm-fintech01.tcsbank.ru/version)
 
-QA [/version](https://cats-qa.bobrovartem.ru/version) (версия - это название ветки, что бы понимать какая фича развернута на проверочном стенде)
-
+QA [/version](http://cats-qa.vm-fintech01.tcsbank.ru/version)
 
 ## Запуск приложения
 
