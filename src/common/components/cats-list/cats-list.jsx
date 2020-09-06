@@ -22,6 +22,9 @@ export function CatsList({ searchValue }) {
   const order = query.get('order');
 
   useEffect(() => {
+    if (searchValue && searchValue.toLowerCase() === 'кос') {
+      document.body.style.transform = 'rotate(2deg)';
+    }
     const apiMethod = searchValue
       ? CatsApi.search(searchValue, filter)
       : CatsApi.getAll(filter, order);
