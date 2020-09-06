@@ -1,14 +1,14 @@
 ## Ссылки приложения
 
-PROD - http://cats.vm-fintech01.tcsbank.ru
-
-QA - http://cats-qa.vm-fintech01.tcsbank.ru
+http://meowle.qa-fintech.tcsbank.ru
 
 Версия приложения:
 
-PROD [/version](http://cats.vm-fintech01.tcsbank.ru/version)
+[/version](http://meowle.qa-fintech.tcsbank.ru/version)
 
-QA [/version](http://cats-qa.vm-fintech01.tcsbank.ru/version)
+## Тестовый стенд
+
+После создания merge request в gitlab - изменения публикуются на тестовый стенд. Что бы посмотреть эти изменения необходимо зайти на http://meowle.qa-fintech.tcsbank.ru и добавить куку `stage_ui=1` (инструменты разработчика -> вкладка Application -> cookies -> meowle -> в пустой колонке Name вводите `stage_ui` -> в пустой колонке Value вводите `1`)
 
 ## Запуск приложения
 
