@@ -132,7 +132,7 @@ function Results({ data, filter, order, onChange }) {
             <div className="column is-2 is-hidden-mobile">
               <CatLogo />
             </div>
-            <div className="column">
+            <div className="column is-10">
               <Groups groups={data.groups} />
             </div>
           </div>
@@ -185,9 +185,9 @@ function Cat({ cat: { id, name, gender } }) {
   const link = `/cats/${id}`;
 
   return (
-    <span className="tag is-size-5">
+    <span className={classNames('tag', 'is-size-5', style.name)}>
       <GenderIcon gender={gender} />
-      <Link to={link} className="has-text-black">
+      <Link to={link} className={classNames('has-text-black', style.name_link)}>
         {name}
       </Link>
     </span>
