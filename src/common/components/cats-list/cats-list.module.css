@@ -12,3 +12,12 @@
     padding-top: 20px;
     padding-bottom: 0;
 }
+
+.name {
+  max-width: 100%;
+}
+
+.name_link {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
