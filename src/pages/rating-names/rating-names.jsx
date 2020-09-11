@@ -6,6 +6,7 @@ import { notify } from '../../utils/notifications/notifications';
 import { Header } from '../../common/components/header';
 import { CatLogo } from '../../common/components/cat-logo';
 import { Icon } from '../../common/components/icon/icon';
+import { Link } from 'react-router-dom';
 import style from './rating-names.module.css';
 
 const titles = {
@@ -13,8 +14,8 @@ const titles = {
   antiTop: 'АнтиТОП-10 имён котиков',
 };
 const apiMethods = {
-  top: ReactionApi.ratingLikes,
-  antiTop: ReactionApi.ratingDislikes,
+  top: ReactionApi.ratingDislikes,
+  antiTop: ReactionApi.ratingLikes,
 };
 const DEFAULT_ERROR = 'Ошибка загрузки рейтинга';
 
@@ -34,6 +35,7 @@ export function RatingNamesPage({ type }) {
     </>
   );
 }
+
 RatingNamesPage.propTypes = {
   type: PropTypes.oneOf(['top', 'antiTop']).isRequired,
 };
@@ -45,6 +47,7 @@ function NamesList({ type, items }) {
   }[type];
   const itemsEl = items.map((item, i) => (
     <Item
+      catId={item.id}
       type={type}
       key={i}
       number={i + 1}
@@ -70,12 +73,14 @@ function NamesList({ type, items }) {
     </section>
   );
 }
+
 NamesList.propTypes = {
   type: PropTypes.oneOf(['top', 'antiTop']).isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-function Item({ type, number, name, count }) {
+function Item({ catId, type, number, name, count }) {
+  const link = `/cats/${catId}`;
   const icon = {
     top: faThumbsUp,
     antiTop: faThumbsDown,
@@ -84,7 +89,9 @@ function Item({ type, number, name, count }) {
   return (
     <tr>
       <td className={style['item-numerable']}>{number}</td>
-      <td>{name}</td>
+      <td>
+        <Link to={link}>{name}</Link>
+      </td>
       <td className={style['item-count']}>
         <Icon icon={icon} />
         {count}
@@ -92,7 +99,9 @@ function Item({ type, number, name, count }) {
     </tr>
   );
 }
+
 Item.propTypes = {
+  catId: PropTypes.number.isRequired,
   type: PropTypes.oneOf(['top', 'antiTop']).isRequired,
   number: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
