@@ -43,5 +43,90 @@
       To begin the development, run `npm start` or `npm start`.
       To create a production bundle, use `npm run build` or `npm build`.
     -->
+    <script type="text/javascript">
+      (function() {
+        if (document.cookie.match(/old-browser-check=true/)) {
+          return;
+        }
+
+        var newBrowsers = [
+          { name: 'Chrome', version: 70 },
+          { name: 'Safari', version: 13 },
+          { name: 'Firefox', version: 71 },
+        ];
+        var databrowser = [
+          { name: 'Chrome', value: 'Chrome', version: 'Chrome' },
+          { name: 'Chrome', value: 'CriOS', version: 'CriOS' },
+          { name: 'Firefox', value: 'Firefox', version: 'Firefox' },
+          { name: 'Safari', value: 'Safari', version: 'Version' },
+        ];
+        var agent = [
+          navigator.platform,
+          navigator.userAgent,
+          navigator.appVersion,
+          navigator.vendor,
+          window.opera,
+        ].join(' ');
+        var currentBrowser = matchItem(agent, this.databrowser);
+
+        for (var i = 0; i < newBrowsers.length; i++) {
+          var browser = newBrowsers[i];
+
+          if (
+            currentBrowser.name === browser.name &&
+            currentBrowser.version >= browser.version
+          ) {
+            return;
+          }
+        }
+
+        var d = new Date();
+
+        d.setTime(d.getTime() + 2 * 24 * 60 * 60 * 1000);
+
+        var expires = 'expires=' + d.toUTCString();
+
+        document.cookie = 'old-browser-check=true;' + expires + ';path=/';
+        location.href =
+          location.origin + '/old-browser.html?redirectTo=' + location.pathname;
+
+        function matchItem(string, data) {
+          for (var i = 0; i < data.length; i += 1) {
+            var regex = new RegExp(data[i].value, 'i');
+            var match = regex.test(string);
+            if (match) {
+              var regexv = new RegExp(
+                data[i].version + '[- /:;]([\\d._]+)',
+                'i'
+              );
+              var matches = string.match(regexv);
+              var version = '';
+              if (matches) {
+                if (matches[1]) {
+                  matches = matches[1];
+                }
+              }
+              if (matches) {
+                matches = matches.split(/[._]+/);
+                for (var j = 0; j < matches.length; j += 1) {
+                  if (j === 0) {
+                    version += matches[j] + '.';
+                  } else {
+                    version += matches[j];
+                  }
+                }
+              } else {
+                version = '0';
+              }
+              return {
+                name: data[i].name,
+                version: parseFloat(version),
+              };
+            }
+          }
+          return { name: 'unknown', version: 0 };
+        }
+      })();
+    </script>
   </body>
 </html>
