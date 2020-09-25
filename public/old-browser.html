@@ -75,8 +75,14 @@
     <script type="text/javascript">
       function closePage() {
         var link = (location.href.match(/redirectTo=(.+)/) || [])[1] || '';
+        var d = new Date();
 
-        location.href = location.origin + '/' + link;
+        d.setTime(d.getTime() + 2 * 24 * 60 * 60 * 1000);
+
+        var expires = 'expires=' + d.toUTCString();
+
+        document.cookie = 'old-browser-check=true;' + expires + ';path=/';
+        location.href = location.origin + link;
       }
     </script>
   </body>

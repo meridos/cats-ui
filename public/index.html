@@ -67,7 +67,7 @@
           navigator.vendor,
           window.opera,
         ].join(' ');
-        var currentBrowser = matchItem(agent, this.databrowser);
+        var currentBrowser = matchItem(agent, databrowser);
 
         for (var i = 0; i < newBrowsers.length; i++) {
           var browser = newBrowsers[i];
@@ -80,13 +80,7 @@
           }
         }
 
-        var d = new Date();
 
-        d.setTime(d.getTime() + 2 * 24 * 60 * 60 * 1000);
-
-        var expires = 'expires=' + d.toUTCString();
-
-        document.cookie = 'old-browser-check=true;' + expires + ';path=/';
         location.href =
           location.origin + '/old-browser.html?redirectTo=' + location.pathname;
 
