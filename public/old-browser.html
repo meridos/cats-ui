@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Обновите браузер</title>
+
+    <style>
+      body {
+        text-align: center;
+        font-size: 18px;
+        color: #333;
+        font-family: Arial;
+      }
+
+      a {
+        text-decoration: none;
+        color: #3491f1;
+      }
+
+      .name {
+        font-size: 30px;
+        font-weight: bold;
+        margin: 40px 0;
+      }
+
+      .title {
+        font-size: 25px;
+        margin: 30px 0 20px;
+      }
+
+      .description {
+        color: #666;
+        margin: 20px 0 40px;
+      }
+
+      .browsers a {
+        display: inline-block;
+        margin: 0 20px;
+      }
+
+      .browsers a img {
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      .link {
+        margin: 40px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="name">MEOWLE</div>
+    <img src="img/unsupported-browser/browser-old.png" class="picture" />
+    <div class="title">Ваш браузер устарел</div>
+    <div class="description">
+      Пожалуйста, обновите браузер — из-за старой версии браузера<br />сайт
+      может работать неправильно
+    </div>
+    <div class="browsers">
+      <a href="https://www.google.ru/chrome/browser/" target="_blank"
+        ><img src="img/unsupported-browser/chrome.png" />Chrome</a
+      >
+      <a href="https://www.mozilla.org/ru/firefox/products/" target="_blank"
+        ><img src="img/unsupported-browser/firefox.png" />Firefox</a
+      >
+      <a href="http://www.opera.com/" target="_blank"
+        ><img src="img/unsupported-browser/opera.png" />Opera</a
+      >
+    </div>
+    <div class="link">
+      <a href="#" onclick="closePage()">Не хочу обновлять</a>
+    </div>
+
+    <script type="text/javascript">
+      function closePage() {
+        var link = (location.href.match(/redirectTo=(.+)/) || [])[1] || '';
+        var d = new Date();
+
+        d.setTime(d.getTime() + 2 * 24 * 60 * 60 * 1000);
+
+        var expires = 'expires=' + d.toUTCString();
+
+        document.cookie = 'old-browser-check=true;' + expires + ';path=/';
+        location.href = location.origin + link;
+      }
+    </script>
+  </body>
+</html>
