@@ -60,7 +60,7 @@ function NamesList({ type, items }) {
     />
   ));
   return (
-    <table className={classNames(style.table, 'column', 'is-6')}>
+    <table className={classNames(style.table)}>
       <tbody>{itemsEl}</tbody>
     </table>
   );
