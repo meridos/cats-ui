@@ -10,10 +10,6 @@ import { Link } from 'react-router-dom';
 import style from './rating-names.module.css';
 import classNames from 'classnames';
 
-const titles = {
-  top: 'ТОП-10 имён котиков',
-  antiTop: 'АнтиТОП-10 имён котиков',
-};
 const DEFAULT_ERROR = 'Ошибка загрузки рейтинга';
 
 export function RatingNamesPage() {
