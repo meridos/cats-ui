@@ -5,8 +5,7 @@ import css from './main.module.css';
 import classNames from 'classnames/bind';
 import {
   faSearch,
-  faHeart,
-  faHeartBroken,
+  faStarHalfAlt,
   faPlus,
   faBars,
 } from '@fortawesome/free-solid-svg-icons';
@@ -50,13 +49,9 @@ class MainPageWithoutRoute extends React.Component {
           <Icon icon={faBars} />
           <span>Все имена</span>
         </Link>
-        <Link to="/top-names" className={className}>
-          <Icon icon={faHeart} />
-          <span>ТОП-10 имён</span>
-        </Link>
-        <Link to="/anti-top-names" className={className}>
-          <Icon icon={faHeartBroken} />
-          <span>АнтиТОП-10 имён</span>
+        <Link to="/rating" className={className}>
+          <Icon icon={faStarHalfAlt} />
+          <span>Рейтинг имён</span>
         </Link>
       </>
     );

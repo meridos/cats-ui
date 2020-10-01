@@ -46,11 +46,8 @@ function App() {
             <Route path="/all-names">
               <AllNamesPage />
             </Route>
-            <Route path="/top-names">
-              <RatingNamesPage type="top" />
-            </Route>
-            <Route path="/anti-top-names">
-              <RatingNamesPage type="antiTop" />
+            <Route path="/rating">
+              <RatingNamesPage />
             </Route>
             <Route path="*">
               <Redirect to="/" />

@@ -8,37 +8,45 @@ import { CatLogo } from '../../common/components/cat-logo';
 import { Icon } from '../../common/components/icon/icon';
 import { Link } from 'react-router-dom';
 import style from './rating-names.module.css';
+import classNames from 'classnames';
 
 const titles = {
   top: 'ТОП-10 имён котиков',
   antiTop: 'АнтиТОП-10 имён котиков',
 };
-const apiMethods = {
-  top: ReactionApi.ratingDislikes,
-  antiTop: ReactionApi.ratingLikes,
-};
 const DEFAULT_ERROR = 'Ошибка загрузки рейтинга';
 
-export function RatingNamesPage({ type }) {
-  const [items, setItems] = useState([]);
+export function RatingNamesPage() {
+  const [items, setItems] = useState({ likes: [], dislikes: [] });
 
   useEffect(() => {
-    apiMethods[type]()
+    ReactionApi.rating()
       .then(setItems)
       .catch(message => notify.error(message || DEFAULT_ERROR));
-  }, [type]);
+  }, []);
 
   return (
     <>
       <Header />
-      <NamesList type={type} items={items} />
+      <section className="section">
+        <div className="container">
+          <div className="columns">
+            <div className="column is-2">
+              <CatLogo class="is-hidden-mobile" />
+            </div>
+            <div className="column">
+              <div className="title is-3">Рейтинг имён котиков</div>
+              <div className="columns">
+                <NamesList type="top" items={items && items.likes} />
+                <NamesList type="antiTop" items={items && items.dislikes} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 }
-
-RatingNamesPage.propTypes = {
-  type: PropTypes.oneOf(['top', 'antiTop']).isRequired,
-};
 
 function NamesList({ type, items }) {
   const countField = {
@@ -56,21 +64,9 @@ function NamesList({ type, items }) {
     />
   ));
   return (
-    <section className="section">
-      <div className="container">
-        <div className="columns">
-          <div className="column is-2">
-            <CatLogo class="is-hidden-mobile" />
-          </div>
-          <div className="column">
-            <div className="title is-3">{titles[type]}</div>
-            <table className={style.table}>
-              <tbody>{itemsEl}</tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
+    <table className={classNames(style.table, 'column', 'is-6')}>
+      <tbody>{itemsEl}</tbody>
+    </table>
   );
 }
 
@@ -85,6 +81,10 @@ function Item({ catId, type, number, name, count }) {
     top: faThumbsUp,
     antiTop: faThumbsDown,
   }[type];
+  const colorClass = {
+    top: 'has-text-success',
+    antiTop: 'has-text-danger',
+  }[type];
 
   return (
     <tr>
@@ -92,7 +92,7 @@ function Item({ catId, type, number, name, count }) {
       <td>
         <Link to={link}>{name}</Link>
       </td>
-      <td className={style['item-count']}>
+      <td className={classNames(style['item-count'], colorClass)}>
         <Icon icon={icon} />
         {count}
       </td>
