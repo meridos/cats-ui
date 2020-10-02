@@ -45,20 +45,11 @@ export class ReactionApi {
   }
 
   /**
-   * Статистика лайков
-   * http://meowle.testops.ru:3001/api-docs-ui/#/default/get_cats_likes_rating
-   * @returns {Promise<array>} Массив объектов с именем и количеством лайков
+   * Рейтинг имен
+   * http://meowle.testops.ru:3001/api-docs-ui/#/default/get_cats_rating
+   * @returns {Promise<{likes: Array, dislikes: Array}>} Массив объектов с списоками лайков и дизлайков
    */
-  static ratingLikes() {
-    return api.get(`/cats/likes-rating`);
-  }
-
-  /**
-   * Статистика дизлайков
-   * http://meowle.testops.ru:3001/api-docs-ui/#/default/get_cats_dislikes_rating
-   * @returns {Promise<array>} Массив объектов с именем и количеством дизлайков
-   */
-  static ratingDislikes() {
-    return api.get(`/cats/dislikes-rating`);
+  static rating() {
+    return api.get(`/cats/rating`);
   }
 }

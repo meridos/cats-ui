@@ -1,6 +1,11 @@
 .table {
   width: 100%;
   max-width: 300px;
+  margin-right: 150px;
+}
+
+.table:last-child {
+  margin-right: 0;
 }
 
 .item-numerable {
@@ -11,4 +16,13 @@
 .item-count {
   white-space: nowrap;
   width: 1px;
+}
+
+
+.type-top {
+  color: var(--success-color);
+}
+
+.type-antiTop {
+  color: var(--danger-color);
 }
