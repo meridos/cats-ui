@@ -69,7 +69,10 @@ function Upload({ catId, onComplete }) {
         notify.success('Фотография успешно загружена');
       })
       .catch(message => {
-        notify.error(message || 'Ошибка загрузки фотографии');
+        notify.error(
+          message ||
+            'Не удалось загрузить изображение. Размер файла больше 5мб или имеет неправильное расширение'
+        );
       })
       .finally(() => {
         input.value = null;
