@@ -10,7 +10,9 @@
     "lint": "npm run lint:js",
     "lint:js": "npx eslint src/* --ext .js,.jsx,.css",
     "version": "node scripts/update-version.js",
-    "lint:format:fix": "prettier --config ./.prettierrc.yml \"src/**/*.{js,jsx,json,css,md}\" --write"
+    "lint:format:fix": "prettier --config ./.prettierrc.yml \"src/**/*.{js,jsx,json,css,md}\" --write",
+    "codecept:run:local": "codeceptjs run --config codecept_config/codecept.conf.local.js",
+    "codecept:run:cli": "codeceptjs run --config codecept_config/codecept.conf.cli.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "1.2.27",
@@ -19,21 +21,23 @@
     "@fortawesome/react-fontawesome": "0.1.8",
     "alertifyjs": "1.13.1",
     "axios": "0.19.2",
+    "babel-eslint": "10.1.0",
     "classnames": "2.2.6",
     "react": "16.12.0",
     "react-dom": "16.12.0",
     "react-router-dom": "5.1.2",
-    "react-scripts": "3.3.1"
+    "react-scripts": "3.4.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "4.2.4",
     "@testing-library/react": "9.3.2",
     "@testing-library/user-event": "7.1.2",
-    "babel-eslint": "10.0.3",
     "eslint": "6.8.0",
     "eslint-plugin-prettier": "^3.1.2",
     "husky": "4.2.1",
-    "prettier": "1.19.1"
+    "prettier": "1.19.1",
+    "codeceptjs": "^3.0.0",
+    "puppeteer": "^5.3.1"
   },
   "eslintConfig": {
     "extends": "react-app"
