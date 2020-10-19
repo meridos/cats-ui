@@ -28,7 +28,11 @@ export function CatLogo({
         ...styles
       )}
     >
-      <img src={`/img/${catImageMap[catType]}.png`} alt="" />
+      <img
+        src={`/img/${catImageMap[catType]}.png`}
+        alt=""
+        data-autotest-id="cat-logo"
+      />
     </figure>
   );
 }

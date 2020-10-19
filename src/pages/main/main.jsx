@@ -110,6 +110,7 @@ class MainPageWithoutRoute extends React.Component {
                         'is-vbottom-mobile',
                         'title'
                       )}
+                      data-autotest-id="title"
                     >
                       meowle
                     </h1>
