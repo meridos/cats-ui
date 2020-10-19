@@ -24,12 +24,14 @@ export class CatsApi {
    * http://meowle.testops.ru:3001/api-docs-ui/#/default/post_cats_search
    * @param {!string} name Часть имени
    * @param {?string=} gender Пол
+   * @param {!string} order Сортировка (asc | desc)
    * @returns {Promise<Groups>} Промис с группировкой имен котов
    */
-  static search(name, gender) {
+  static search(name, gender, order) {
     return api.post('/cats/search', {
       name,
       gender,
+      order,
     });
   }
 
