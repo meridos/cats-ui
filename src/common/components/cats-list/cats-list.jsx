@@ -18,7 +18,7 @@ export function CatsList({ searchValue }) {
   const query = useQuery();
   const { pathname } = useLocation();
 
-  const filter = query.get('gender');
+  const gender = query.get('gender');
   const order = query.get('order');
 
   useEffect(() => {
@@ -26,8 +26,8 @@ export function CatsList({ searchValue }) {
       document.body.style.transform = 'rotate(2deg)';
     }
     const apiMethod = searchValue
-      ? CatsApi.search(searchValue, filter)
-      : CatsApi.getAll(filter, order);
+      ? CatsApi.search(searchValue, gender, order)
+      : CatsApi.getAll(gender, order);
 
     setLoading(true);
     apiMethod
@@ -41,7 +41,7 @@ export function CatsList({ searchValue }) {
       .finally(() => {
         setLoading(false);
       });
-  }, [searchValue, filter, order]);
+  }, [searchValue, gender, order]);
 
   const changeFilterAndSort = (filter, order) => {
     const gender = filter ? `gender=${filter}` : '';
@@ -63,7 +63,7 @@ export function CatsList({ searchValue }) {
   ) : data?.count ? (
     <Results
       data={data}
-      filter={filter}
+      filter={gender}
       order={order}
       onChange={changeFilterAndSort}
     />
