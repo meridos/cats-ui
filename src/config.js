@@ -4,9 +4,12 @@ const local = {
   photosApi: 'http://localhost:3001',
 };
 const production = {
-  catsApi: '/api/core',
-  reactionApi: '/api/likes',
-  photosApi: '/api/photos',
+  catsApi: 'https://meowle.qa-fintech.tcsbank.ru/api/core',
+  reactionApi: 'https://meowle.qa-fintech.tcsbank.ru/api/likes',
+  photosApi: 'https://meowle.qa-fintech.tcsbank.ru/api/photos',
 };
 
-export const urls = process.env.NODE_ENV === 'production' ? production : local;
+export const urls =
+  process.env.API_PROD || process.env.NODE_ENV === 'production'
+    ? production
+    : local;
