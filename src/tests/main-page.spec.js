@@ -1,4 +1,5 @@
 const MainPage = require('./page-objects/main-page');
+const { appUrl } = require('./helpers/urls');
 
 Feature('Главная старница');
 
@@ -10,6 +11,6 @@ Scenario('Заголовок страницы', ({ I }) => {
 Scenario('Иконка кота', ({ I }) => {
   I.amOnPage('/');
   I.seeAttributesOnElements(MainPage.logo, {
-    src: 'https://meowle.qa-fintech.tcsbank.ru/img/cat.png',
+    src: `${appUrl}/img/cat.png`,
   });
 });

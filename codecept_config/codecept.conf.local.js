@@ -9,7 +9,7 @@ exports.config = {
   output: '../output',
   helpers: {
     Puppeteer: {
-      url: 'https://meowle.qa-fintech.tcsbank.ru',
+      url: 'http://localhost:3000',
       show: true,
       windowSize: '1200x900',
     },
