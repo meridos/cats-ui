@@ -10,6 +10,6 @@ const production = {
 };
 
 export const urls =
-  process.env.API_PROD || process.env.NODE_ENV === 'production'
+  process.env.REACT_APP_API_PROD || process.env.NODE_ENV === 'production'
     ? production
     : local;

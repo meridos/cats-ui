@@ -1,5 +1,5 @@
 const appUrl =
-  process.env.API_PROD || process.env.NODE_ENV === 'production'
+  process.env.REACT_APP_UI_PROD || process.env.NODE_ENV === 'production'
     ? 'https://meowle.qa-fintech.tcsbank.ru'
     : 'http://localhost:3000';
 
