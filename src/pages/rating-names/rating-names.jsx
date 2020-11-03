@@ -85,7 +85,7 @@ function Item({ catId, type, number, name, count }) {
   return (
     <tr>
       <td className={style['item-numerable']}>{number}</td>
-      <td>
+      <td className={style['item-name']}>
         <Link to={link}>{name}</Link>
       </td>
       <td className={classNames(style['item-count'], colorClass)}>
