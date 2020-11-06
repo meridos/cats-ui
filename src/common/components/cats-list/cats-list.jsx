@@ -41,6 +41,10 @@ export function CatsList({ searchValue }) {
       .finally(() => {
         setLoading(false);
       });
+
+    return () => {
+      document.body.style.transform = null;
+    };
   }, [searchValue, gender, order]);
 
   const changeFilterAndSort = (filter, order) => {
