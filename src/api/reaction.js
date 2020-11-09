@@ -8,40 +8,20 @@ export class ReactionApi {
    * Добавление лайка имени
    * http://meowle.testops.ru:3001/api-docs-ui/#/default/post_cats__catId__like
    * @param {number} catId ID имени кота
+   * @param {string} type Тип реакции: лайк/дизлайк
+   * @param {boolean} isReacted Значение реакции
    * @returns {Promise<string>} OK
    */
-  static like(catId) {
-    return api.post(`/cats/${catId}/like`);
-  }
+  static likes(catId, type, isReacted) {
+    const data = {};
 
-  /**
-   * Удаление лайка имени
-   * http://meowle.testops.ru:3001/api-docs-ui/#/default/delete_cats__catId__like
-   * @param {number} catId ID имени кота
-   * @returns {Promise<string>} OK
-   */
-  static removeLike(catId) {
-    return api.delete(`/cats/${catId}/like`);
-  }
+    if (type === 'like') {
+      data.like = isReacted;
+    } else if (type === 'dislike') {
+      data.dislike = isReacted;
+    }
 
-  /**
-   * Добавление дизлайка имени
-   * http://meowle.testops.ru:3001/api-docs-ui/#/default/post_cats__catId__dislike
-   * @param {number} catId ID имени кота
-   * @returns {Promise<string>} OK
-   */
-  static dislike(catId) {
-    return api.post(`/cats/${catId}/dislike`);
-  }
-
-  /**
-   * Удаление дизлайка имени
-   * http://meowle.testops.ru:3001/api-docs-ui/#/default/delete_cats__catId__dislike
-   * @param {number} catId ID имени кота
-   * @returns {Promise<string>} OK
-   */
-  static removeDislike(catId) {
-    return api.delete(`/cats/${catId}/dislike`);
+    return api.post(`/cats/${catId}/likes`, data);
   }
 
   /**

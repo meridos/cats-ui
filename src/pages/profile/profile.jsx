@@ -102,16 +102,26 @@ Info.propTypes = {
 };
 
 function Title({ catInfo, updateInfo }) {
+  const [disabled, updateDisabled] = useState(false);
+
   const likes = updateInfo ? (
     <>
       <ReactionButton
         catInfo={catInfo}
         type="like"
+        disabled={disabled}
+        setDisabled={isDisabled => {
+          updateDisabled(isDisabled);
+        }}
         updateCatInfo={updateInfo}
       />
       <ReactionButton
         catInfo={catInfo}
         type="dislike"
+        disabled={disabled}
+        setDisabled={isDisabled => {
+          updateDisabled(isDisabled);
+        }}
         updateCatInfo={updateInfo}
       />
     </>

@@ -21,7 +21,13 @@ const countField = {
   dislike: 'dislikes',
 };
 
-export function ReactionButton({ catInfo, type = 'like', updateCatInfo }) {
+export function ReactionButton({
+  catInfo,
+  type = 'like',
+  disabled,
+  setDisabled,
+  updateCatInfo,
+}) {
   const storageMethod = {
     like: storage.likes,
     dislike: storage.dislikes,
@@ -33,8 +39,9 @@ export function ReactionButton({ catInfo, type = 'like', updateCatInfo }) {
 
   const onClick = () => {
     setLoading(true);
-    sendReaction(type, catInfo, isReacted)
-      .then(() => {
+    setDisabled(true);
+    ReactionApi.likes(catInfo.id, type, !isReacted)
+      .then(response => {
         const storMethod = [storageMethod.set, storageMethod.remove][
           Number(isReacted)
         ];
@@ -42,11 +49,15 @@ export function ReactionButton({ catInfo, type = 'like', updateCatInfo }) {
         storMethod(catInfo.id);
         updateReacted(!isReacted);
         updateCatInfo({
-          [countField[type]]: catInfo[countField[type]] + (isReacted ? -1 : 1),
+          [countField[type]]: response[countField[type]],
         });
+      })
+      .catch(message => {
+        notify.error(message);
       })
       .finally(() => {
         setLoading(false);
+        setDisabled(false);
       });
   };
 
@@ -61,6 +72,7 @@ export function ReactionButton({ catInfo, type = 'like', updateCatInfo }) {
           'is-loading': isLoading,
         }
       )}
+      disabled={disabled}
       type="button"
       title={titleMap[type]}
       onClick={onClick}
@@ -73,16 +85,7 @@ export function ReactionButton({ catInfo, type = 'like', updateCatInfo }) {
 ReactionButton.propTypes = {
   catInfo: PropTypes.object.isRequired,
   type: PropTypes.oneOf(['like', 'dislike']).isRequired,
+  disabled: PropTypes.bool.isRequired,
+  setDisabled: PropTypes.func.isRequired,
   updateCatInfo: PropTypes.func.isRequired,
 };
-
-function sendReaction(type, catInfo, isReacted) {
-  const apiMethod = {
-    like: [ReactionApi.like, ReactionApi.removeLike],
-    dislike: [ReactionApi.dislike, ReactionApi.removeDislike],
-  }[type][isReacted ? 1 : 0];
-
-  return apiMethod(catInfo.id).catch(message => {
-    notify.error(message);
-  });
-}
